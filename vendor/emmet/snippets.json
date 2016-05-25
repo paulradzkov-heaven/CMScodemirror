@@ -1,0 +1,11 @@
+{
+    "html": {
+        "snippets": {
+            "xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
+            "banner": "<div class=\"banner\">|</div>"
+        },
+        "abbreviations": {
+            "bootstrap": "html>(head>meta[charset=UTF-8]+title{${1:Bootstrapped}}+link[href=\"../css/lib/bootstrap.css\"]+link[href=\"../css/lib/bootstrap-responsive.css\"]+script[src=\"../js/lib/bootstrap.js\"]+script[src=\"../js/lib/jquery.js\"])+body>div.container",
+        }
+    }
+}

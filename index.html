@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CMS codemirror</title>
+    <link rel="stylesheet" href="vendor/bettertext/bettertext.css">
+    <link rel="stylesheet" href="vendor/codemirror/lib/codemirror.css">
+    <link rel="stylesheet" href="vendor/codemirror/theme/monokai.css">
+    <script src="vendor/codemirror/lib/codemirror.js"></script>
+    <script src="vendor/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+    <script src="vendor/codemirror/mode/javascript/javascript.js"></script>
+    <script src="vendor/codemirror/mode/xml/xml.js"></script>
+    <script src="vendor/codemirror/mode/css/css.js"></script>
+    <script src="vendor/codemirror/addon/selection/active-line.js"></script>
+    <script src="vendor/codemirror/addon/edit/matchbrackets.js"></script>
+    <script src="vendor/emmet/emmet.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+</head>
+<body>
+    <article>
+        <h1>CMS codemirror editor prototype</h1>
+        <form>
+<textarea id="code" name="code">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+</head>
+<body>
+
+</body>
+</html>
+</textarea>
+        </form>
+
+        <h2>Default keybindings</h2>
+        <ul>
+            <li><code>Cmd-E</code> or <code>Tab</code>: Expand abbreviation</li>
+            <li><code>Cmd-D</code>: Balance Tag (matches opening and closing tag pair)</li>
+            <li><code>Shift-Cmd-D</code>: Balance Tag Inward</li>
+            <li><code>Shift-Cmd-A</code>: Wrap With Abbreviation</li>
+            <li><code>Ctrl-Alt-Right</code>: Next Edit Point</li>
+            <li><code>Ctrl-Alt-Left</code>: Previous Edit Point</li>
+            <li><code>Cmd-L</code>: Select line</li>
+            <li><code>Cmd-Shift-M</code>: Merge Lines</li>
+            <li><code>Cmd-/</code>: Toggle Comment</li>
+            <li><code>Cmd-J</code>: Split/Join Tag</li>
+            <li><code>Cmd-K</code>: Remove Tag</li>
+            <li><code>Shift-Cmd-Y</code>: Evaluate Math Expression</li>
+            <li><code>Ctrl-Up</code>: Increment Number by 1</li>
+            <li><code>Ctrl-Down</code>: Decrement Number by 1</li>
+            <li><code>Ctrl-Alt-Up</code>: Increment Number by 0.1</li>
+            <li><code>Ctrl-Alt-Down</code>: Decrement Number by 0.1</li>
+            <li><code>Shift-Ctrl-Up</code>: Increment Number by 10</li>
+            <li><code>Shift-Ctrl-Down</code>: Decrement Number by 10</li>
+            <li><code>Shift-Cmd-.</code>: Select Next Item</li>
+            <li><code>Shift-Cmd-,</code>: Select Previous Item</li>
+            <li><code>Cmd-B</code>: Reflect CSS Value</li>
+        </ul>
+
+    </article>
+    <script>
+        var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+            lineNumbers: true,
+            styleActiveLine: true,
+            matchBrackets: true,
+            indentUnit: 4,
+            theme: "monokai",
+            mode:  "text/html",
+            profile: 'xhtml'
+        });
+        emmetCodeMirror(editor, {
+            'Tab': 'emmet.expand_abbreviation_with_tab'
+        });
+        window.onload = function() {
+            $.getJSON( "vendor/emmet/snippets.json", function( data ) {
+                emmetCodeMirror.emmet.loadUserData(data);
+            });
+        };
+    </script>
+</body>
+</html>
