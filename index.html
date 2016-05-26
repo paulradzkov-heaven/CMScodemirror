@@ -20,7 +20,7 @@
     <article>
         <h1>CMS codemirror editor prototype</h1>
         <form>
-<textarea id="code" name="code">
+<textarea id="code" name="code" rows="40">
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -75,7 +75,7 @@
         });
         window.onload = function() {
             $.getJSON( "vendor/emmet/snippets.json", function( data ) {
-                emmetCodeMirror.emmet.loadUserData(data);
+                emmetCodeMirror.loadUserData(data);
             });
         };
     </script>
