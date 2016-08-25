@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="vendor/bettertext/bettertext.css">
     <link rel="stylesheet" href="vendor/codemirror/lib/codemirror.css">
     <link rel="stylesheet" href="vendor/codemirror/theme/monokai.css">
-    <link rel="stylesheet" href="vendor/codemirror/addon/hint/show-hint.css">
     <script src="vendor/codemirror/lib/codemirror.js"></script>
     <script src="vendor/codemirror/mode/htmlmixed/htmlmixed.js"></script>
     <script src="vendor/codemirror/mode/javascript/javascript.js"></script>
@@ -14,8 +13,6 @@
     <script src="vendor/codemirror/mode/css/css.js"></script>
     <script src="vendor/codemirror/addon/selection/active-line.js"></script>
     <script src="vendor/codemirror/addon/edit/matchbrackets.js"></script>
-    <script src="vendor/codemirror/addon/hint/show-hint.js"></script>
-    <script src="vendor/codemirror/addon/hint/anyword-hint.js"></script>
     <script src="vendor/emmet/emmet.js"></script>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
 </head>
@@ -23,7 +20,7 @@
     <article>
         <h1>CMS codemirror editor prototype</h1>
         <form>
-<textarea id="code" name="code" rows="40">
+<textarea id="code" name="code" rows="60">
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,18 +34,23 @@
 </textarea>
         </form>
 
+        <p>Type <code>carousel</code> and hit <code>Tab</code>.</p>
+
         <h2>Default keybindings</h2>
         <ul>
-            <li><code>Cmd-E</code> or <code>Tab</code>: Expand abbreviation</li>
-            <li><code>Ctrl-Space</code>: autocomplete</li>
+            <li><code>Tab</code>: Expand abbreviation</li>
+        </ul>
+
+        <h2>Custom snippets</h2>
+        <ul>
+            <li><code>bootstrap</code></li>
+            <li><code>carousel</code></li>
+            <li><code>banner</code></li>
         </ul>
 
     </article>
     <script>
-        // Register an array of completion words for this mode
-        CodeMirror.registerHelper("hintWords", "text/html",
-        ["banner", "carousel", "slider"]);
-        var emmetsnippets = ["banner", "carousel", "slider"];
+        'use strict'
 
         var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
             lineNumbers: true,
@@ -57,20 +59,24 @@
             indentUnit: 4,
             theme: "monokai",
             mode:  "text/html",
-            profile: 'xhtml',
-            extraKeys: {"Ctrl-Space": "autocomplete"},
-            hintOptions: {}
+            profile: 'xhtml'
         });
 
         emmetCodeMirror(editor, {
             'Tab': 'emmet.expand_abbreviation_with_tab'
         });
 
-        window.onload = function() {
-            $.getJSON( "vendor/emmet/snippets.json", function( data ) {
-                emmetCodeMirror.loadUserData(data);
-            });
-        };
+        emmetCodeMirror.emmet.loadSnippets({
+            'html': {
+                'abbreviations': {
+                    "bootstrap": "html>(head>meta[charset=UTF-8]+title{${1:Bootstrapped}}+link[href=\"../css/lib/bootstrap.css\"]+link[href=\"../css/lib/bootstrap-responsive.css\"]+script[src=\"../js/lib/bootstrap.js\"]+script[src=\"../js/lib/jquery.js\"])+body>div.container"
+                },
+                'snippets': {
+                    "carousel": "<div data-interval='5000' data-ride='carousel' class='carousel carousel-banners slide' id='promotions-main'>\n\t<!-- Indicators -->\n\t<ol class='carousel-indicators'>\n\t\t<li class='active' data-slide-to='0' data-target='#promotions-main'></li>\n\t\t<li class='|' data-slide-to='1' data-target='#promotions-main'></li>\n\t</ol>\n\t<!-- Wrapper for slides -->\n\t<div class='carousel-inner'>\n\t\t<div class='item text-center active'>\n\t\t\t<a class='hidden-xs' href='|'><img alt='|' src='|'></a>\n\t\t\t<a class='visible-xs' href='|'><img alt='|' src='|'></a>\n\t\t</div>\n\t\t<div class='item text-center'>\n\t\t\t<a class='hidden-xs' href='|'><img alt='|' src='|'></a>\n\t\t\t<a class='visible-xs' href='|'><img alt='|' src='|'></a>\n\t\t</div>\n\t</div>\n\t<!-- Controls -->\n\t<a data-slide='prev' role='button' href='#promotions-main' class='left carousel-control'>\n\t\t<svg style='fill: #FFFFFF;' class='i i--slider-arrow-left' xmlns='http://www.w3.org/2000/svg'><use xlink:href='#i--slider-arrow-left' xmlns:xlink='http://www.w3.org/1999/xlink'></use></svg>\n\t</a>\n\t<a data-slide='next' role='button' href='#promotions-main' class='right carousel-control'>\n\t\t<svg style='fill: #FFFFFF;' class='i i--slider-arrow-right' xmlns='http://www.w3.org/2000/svg'><use xlink:href='#i--slider-arrow-right' xmlns:xlink='http://www.w3.org/1999/xlink'></use></svg>\n\t</a>\n</div>\n",
+                    "banner": "<div class='banner'>\n\t<a href='${1:custompath}' class='banner-link'>\n\t\t<img src='${2:imgpath}' alt='${child}' class='banner-img'>\n\t</a>\n</div>"
+                }
+            }
+        });
     </script>
 </body>
 </html>
